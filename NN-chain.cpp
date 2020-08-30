@@ -6,14 +6,14 @@
 #include <fstream>
 #include <float.h>
 using namespace std;
-#include "tbb/tick_count.h"
-using namespace tbb;
 
 omp_lock_t chain_lock;//Critical Section I
 omp_lock_t chain_Q_lock;
 omp_lock_t update_Q_lock;//Critical Section II
 
 ofstream fout;
+
+int dummy;
 
 inline void dendrogram_update(INFO *info, const int idx1, const int idx2, const float min)
 {
@@ -80,11 +80,13 @@ void NN_chain( t_float *D, const int N, int thread_c, int thread_m)
 		}
 	}
 	
+	cout << dummy << endl;
+
 	omp_destroy_lock(&chain_lock);
 	omp_destroy_lock(&chain_Q_lock);
 	omp_destroy_lock(&update_Q_lock);
 	fout.close();
-
+	
 	delete []info;
 	delete []map;
 }
@@ -141,7 +143,6 @@ void Chain_Grow(CHAIN* &NN_chain, doubly_linked_list &AR, doubly_linked_list &cl
 	int i;
 	int idx0;
 	int N1, N2;
-	tick_count tt1,tt2;
 	t_float min=NN_chain->D_TOP();
 
 	int idx1=NN_chain->List.top(), idx2;
@@ -235,8 +236,8 @@ void matrix_update_section(int &ClusterID, const int N,  std::queue<U_PAIR> &Q, 
 		
 		while( (ClusterID < 2*N-1) )
 		{
-			if(Q.empty()) continue;
-			
+			dummy++;
+			if(Q.empty()) continue;	
 			omp_set_lock(&update_Q_lock);
 			idx1=Q.front().idx1;
 			idx2=Q.front().idx2;
@@ -267,6 +268,7 @@ void matrix_update_section(int &ClusterID, const int N,  std::queue<U_PAIR> &Q, 
 			Info_update(info, idx1, idx2, ClusterID);
 			AR.remove(idx1);
 			omp_unset_lock(&chain_lock);
+			dummy++;
 		}
 	}
 }

@@ -4,8 +4,6 @@
 #include <iostream>
 using namespace std;
 
-#include "tbb/tick_count.h"
-using namespace tbb;
 
 #include "NN-chain.h"
 
@@ -19,9 +17,6 @@ int main(int argc, char *argv[])
 	int thread_c=atoi(argv[4]);
 	int thread_m=atoi(argv[5]);
 	
-	
-	tick_count tt1,tt2, tt3;
-	
 	float *point;//=new float[MAX_N*DIM];
 	float *result;//=new float[MAX_N*MAX_N/2];
 	
@@ -34,25 +29,12 @@ int main(int argc, char *argv[])
 	{
 		fscanf(pFile, "%f", &f);
 		point[i] = f;
-// 		cout << point[i] << endl;
 	}
 
-	tt1=tick_count::now();
 	
 	pdist(point, result, MAX_N, DIM);
 	
-	tt2=tick_count::now();
-// 	cout << (tt2-tt1).seconds() << endl;
-// 	cout << "Total Running Time = " << (tt2-tt1).seconds() << "sec" << endl;
-	
-	
 	NN_chain(result, MAX_N, thread_c, thread_m);
-	
-
-	tt3=tick_count::now();
-// 	cout << "NN = " << (tt3-tt2).seconds() << "sec" << endl;
-	cout << (tt3-tt2).seconds() << endl;
-
 	
 // 	delete [] point;
 // 	delete [] result;

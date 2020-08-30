@@ -11,5 +11,5 @@
 this command ouputs dummy value and 'dendrogram' file.
 
 
-# eference 
+# Reference 
 Yongkweon Jeon and Sungroh Yoon. "Multi-threaded hierarchical clustering by parallel nearest-neighbor chaining." IEEE Transactions on Parallel and Distributed Systems 26.9 (2014): 2534-2548.

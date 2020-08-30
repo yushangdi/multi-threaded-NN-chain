@@ -8,7 +8,7 @@
 ./NN-chain test.data 10 2 1 1
 ```
 
-this command ouputs dummy value and 'dendrogram' file.
+This command outputs a dummy value and 'dendrogram' file which is the result of UPGMA for the input datasets.
 
 
 # Reference 

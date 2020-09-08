@@ -1,19 +1,19 @@
 #include "pdist.h"
 #include "openmp_pdist.h"
-#include "error_check.h"
-#include "cuda_pdist.cuh"
+// #include "error_check.h"
+// #include "cuda_pdist.cuh"
 #include <omp.h>
 #include <iostream>
 using namespace std;
-#include "tbb/tick_count.h"
-using namespace tbb;
+// #include "tbb/tick_count.h"
+// using namespace tbb;
 
 
 
 void pdist(float *point, float *result, const int MAX_N, const int DIM)
 {
 	int i=0;
-	tick_count tt1,tt2, tt3;
+//	tick_count tt1,tt2, tt3;
 
 	//multi-gpu//
 	// int GPU_N = 1;

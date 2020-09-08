@@ -8,6 +8,7 @@ using namespace std;
 
 
 #include "NN-chain.h"
+#include "gettime.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,8 @@ int main(int argc, char *argv[])
 	float f;
 	int thread_c=atoi(argv[4]);
 	int thread_m=atoi(argv[5]);
+
+	timer t;t.start();
 
 	float *point = new float[MAX_N*DIM];
 	float *result = new float[MAX_N*MAX_N/2];
@@ -32,11 +35,16 @@ int main(int argc, char *argv[])
 		fscanf(pFile, "%f", &f);
 		point[i] = f;
 	}
+	cout << "init " << t.next() << endl;
 
 
 	pdist(point, result, MAX_N, DIM);
 
+	cout << "distM " << t.next() << endl;
+
 	NN_chain(result, MAX_N, thread_c, thread_m);
+
+	cout << "NNchain " << t.next() << endl;
 
 // 	delete [] point;
 // 	delete [] result;
@@ -44,5 +52,6 @@ int main(int argc, char *argv[])
 	// checkCudaErrors( cudaFreeHost(result) );
 	// fcloseall();
 	fclose(pFile);
+	t.reportTotal("total");
 	return 0;
 }

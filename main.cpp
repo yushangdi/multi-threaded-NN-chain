@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
 	int thread_c=atoi(argv[4]);
 	int thread_m=atoi(argv[5]);
 
-	float *point;//=new float[MAX_N*DIM];
-	float *result;//=new float[MAX_N*MAX_N/2];
+	float *point = new float[MAX_N*DIM];
+	float *result = new float[MAX_N*MAX_N/2];
 
 	// checkCudaErrors( cudaHostAlloc((void**)&point,sizeof(float)*MAX_N*DIM, cudaHostAllocWriteCombined) );//use page-locked memory
 	// checkCudaErrors( cudaHostAlloc((void**)&result,sizeof(float)*MAX_N*(MAX_N-1)/2, cudaHostAllocPortable) );//use page-locked memmory

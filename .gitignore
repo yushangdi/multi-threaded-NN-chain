@@ -1,1 +1,5 @@
 main.o
+NN-chain
+NN-chain.o
+openmp_pdist.o
+pdist.o

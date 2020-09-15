@@ -17,7 +17,7 @@ int dummy;
 
 inline void dendrogram_update(INFO *info, const int idx1, const int idx2, const float min)
 {
-	fout << info[idx1].clusterID << '\t' << info[idx2].clusterID << '\t' << min << endl;
+//	fout << info[idx1].clusterID << '\t' << info[idx2].clusterID << '\t' << min << endl;
 }
 
 void cluster_info_set(INFO *info, const int N);

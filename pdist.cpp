@@ -4,15 +4,16 @@
 // #include "cuda_pdist.cuh"
 #include <omp.h>
 #include <iostream>
+#include "common.h"
 using namespace std;
 // #include "tbb/tick_count.h"
 // using namespace tbb;
 
 
 
-void pdist(float *point, float *result, const int MAX_N, const int DIM)
+void pdist(float *point, float *result, const intT MAX_N, const int DIM)
 {
-	int i=0;
+	// int i=0;
 //	tick_count tt1,tt2, tt3;
 
 	//multi-gpu//
@@ -36,7 +37,7 @@ void pdist(float *point, float *result, const int MAX_N, const int DIM)
 	// }
 
 
-	int DONE=0;
+	intT DONE=0;
 
 	omp_set_nested(1);
 	omp_set_max_active_levels(2);

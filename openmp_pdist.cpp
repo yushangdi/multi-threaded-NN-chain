@@ -1,6 +1,7 @@
 #include <iostream>
 #include <omp.h>
 #include <math.h>
+#include "common.h"
 using namespace std;
 
 #define CPU_CHUNK 128
@@ -8,10 +9,10 @@ using namespace std;
 #define ADDR_(r_,c_) ( (2*MAX_N-3-(r_))*(r_)>>1)-1+(c_)
 #define R_(r_,c_) (result[ADDR_(r_,c_)]) 
 
-void pdist_openmp(int &DONE, const int MAX_N, const int DIM, float *point, float *result)
+void pdist_openmp(intT &DONE, const intT MAX_N, const int DIM, float *point, float *result)
 {
-	int START=0;
-	int END=0;
+	intT START=0;
+	intT END=0;
 	
 	while (DONE < MAX_N)
 	{
@@ -26,7 +27,7 @@ void pdist_openmp(int &DONE, const int MAX_N, const int DIM, float *point, float
 		
 		#pragma omp parallel num_threads(12)
 		{
-			int i,j,k;
+			intT i,j,k; //long
 			float tmp,sum;
 			#pragma omp for
 			for( i=START; i < END ; i++)

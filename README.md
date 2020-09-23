@@ -11,5 +11,8 @@
 This command outputs a dummy value and 'dendrogram' file which is the result of UPGMA for the input datasets.
 
 
-# Reference 
+# Reference
 Yongkweon Jeon and Sungroh Yoon. "Multi-threaded hierarchical clustering by parallel nearest-neighbor chaining." IEEE Transactions on Parallel and Distributed Systems 26.9 (2014): 2534-2548.
+
+
+./NN-chain ~/datasets/2D_GaussianDisc_10K.pbbs 10000 2 19 13

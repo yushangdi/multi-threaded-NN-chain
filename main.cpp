@@ -10,11 +10,14 @@ using namespace std;
 #include "NN-chain.h"
 #include "gettime.h"
 
+
+#include "common.h"
+
 int main(int argc, char *argv[])
 {
-	int i;
+	intT i;
 	FILE *pFile=fopen(argv[1],"rb");
-	int MAX_N=atoi(argv[2]);
+	intT MAX_N=atol(argv[2]); //compile with -Wall flag
 	int DIM=atoi(argv[3]);
 	float f;
 	int thread_c=atoi(argv[4]);

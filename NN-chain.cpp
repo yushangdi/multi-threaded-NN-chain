@@ -142,8 +142,8 @@ bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &cluster_list, t_float *D, 
 void Chain_Grow(CHAIN* &NN_chain, doubly_linked_list &AR, doubly_linked_list &cluster_list,  
 		t_float *D, const intT N, INFO *info, intT &ClusterID, queue<U_PAIR> &Q, queue<CHAIN*> &update_queue)
 {
-	intT i;
-	intT idx0;
+	// intT i;
+	// intT idx0;
 	intT N1, N2;
 	t_float min=NN_chain->D_TOP();
 

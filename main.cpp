@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
 	intT i;
 	FILE *pFile=fopen(argv[1],"rb");
-	intT MAX_N=atol(argv[2]); //compile with -Wall flag
+	const intT MAX_N=atol(argv[2]); //compile with -Wall flag
 	int DIM=atoi(argv[3]);
 	float f;
 	int thread_c=atoi(argv[4]);

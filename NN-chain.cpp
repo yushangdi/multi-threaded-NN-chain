@@ -34,7 +34,7 @@ void NN_chain( t_float *D, const intT N, int thread_c, int thread_m)
 
 	doubly_linked_list AR(N); // Valid objects List. for Matirx update and Find NN
 	doubly_linked_list cluster_list(2*N); // for cluster which is not in any chain.
-	intT *map=new int[N]; // map[0] == idx of 0+N th cluster.
+	intT *map=new intT[N]; // map[0] == idx of 0+N th cluster.
 	list<CHAIN*> chain_queue; // there are chains whose dependencies are removed
 	
 	INFO *info=new INFO[N]; // for cluster information.
@@ -93,10 +93,10 @@ void NN_chain( t_float *D, const intT N, int thread_c, int thread_m)
 	delete []map;
 }
 
-bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &cluster_list, t_float *D, const int N, 
-		INFO *info, list<CHAIN*> &chain_queue, int &ClusterID, int *map, int &chainID)
+bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &cluster_list, t_float *D, const intT N, 
+		INFO *info, list<CHAIN*> &chain_queue, intT &ClusterID, intT *map, intT &chainID)
 {
-	int i=0, ID;
+	intT i=0, ID;
 		
 	omp_set_lock(&chain_Q_lock);
 	while (!chain_queue.empty())
@@ -140,14 +140,14 @@ bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &cluster_list, t_float *D, 
 }
 
 void Chain_Grow(CHAIN* &NN_chain, doubly_linked_list &AR, doubly_linked_list &cluster_list,  
-		t_float *D, const int N, INFO *info, int &ClusterID, queue<U_PAIR> &Q, queue<CHAIN*> &update_queue)
+		t_float *D, const intT N, INFO *info, intT &ClusterID, queue<U_PAIR> &Q, queue<CHAIN*> &update_queue)
 {
-	int i;
-	int idx0;
-	int N1, N2;
+	intT i;
+	intT idx0;
+	intT N1, N2;
 	t_float min=NN_chain->D_TOP();
 
-	int idx1=NN_chain->List.top(), idx2;
+	intT idx1=NN_chain->List.top(), idx2;
 	
 	find_NN(AR, idx1, idx2, min, D, N, info);
 	

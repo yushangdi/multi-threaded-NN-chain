@@ -5,6 +5,8 @@
 #include "NN-chain.h"
 #include <fstream>
 #include <float.h>
+#include "common.h"
+
 using namespace std;
 
 omp_lock_t chain_lock;//Critical Section I
@@ -13,26 +15,26 @@ omp_lock_t update_Q_lock;//Critical Section II
 
 ofstream fout;
 
-int dummy;
+intT dummy;
 
-inline void dendrogram_update(INFO *info, const int idx1, const int idx2, const float min)
+inline void dendrogram_update(INFO *info, const intT idx1, const intT idx2, const float min)
 {
 	fout << info[idx1].clusterID << '\t' << info[idx2].clusterID << '\t' << min << endl;
 }
 
-void cluster_info_set(INFO *info, const int N);
+void cluster_info_set(INFO *info, const intT N);
 
 
-void NN_chain( t_float *D, const int N, int thread_c, int thread_m)
+void NN_chain( t_float *D, const intT N, int thread_c, int thread_m)
 {
-	int i; // iterator
-	int ClusterID = N;//N+1
-	int chainID=0; // for chain identification.
+	// int i; // iterator
+	intT ClusterID = N;//N+1
+	intT chainID=0; // for chain identification.
 	fout.open("dendrogram"); //ofstream fout;
 
 	doubly_linked_list AR(N); // Valid objects List. for Matirx update and Find NN
 	doubly_linked_list cluster_list(2*N); // for cluster which is not in any chain.
-	int *map=new int[N]; // map[0] == idx of 0+N th cluster.
+	intT *map=new int[N]; // map[0] == idx of 0+N th cluster.
 	list<CHAIN*> chain_queue; // there are chains whose dependencies are removed
 	
 	INFO *info=new INFO[N]; // for cluster information.
@@ -226,12 +228,12 @@ void Chain_Grow(CHAIN* &NN_chain, doubly_linked_list &AR, doubly_linked_list &cl
 	NN_chain=NULL;
 }
 
-void matrix_update_section(int &ClusterID, const int N,  std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue, t_float *D, INFO *info,
-			   const int thread_m, doubly_linked_list &AR, std::list<CHAIN*> &chain_queue, int *map)
+void matrix_update_section(intT &ClusterID, const intT N,  std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue, t_float *D, INFO *info,
+			   const int thread_m, doubly_linked_list &AR, std::list<CHAIN*> &chain_queue, intT *map)
 {
 	#pragma omp parallel num_threads(1)
 	{
-		int idx1, idx2;
+		intT idx1, idx2;
 		CHAIN *NN_chain;
 		
 		while( (ClusterID < 2*N-1) )
@@ -273,17 +275,17 @@ void matrix_update_section(int &ClusterID, const int N,  std::queue<U_PAIR> &Q, 
 	}
 }
 
-void matrix_update(t_float *D, const int idx1, const int idx2, const int N, INFO *info, const int thread_m, doubly_linked_list &AR)
+void matrix_update(t_float *D, const intT idx1, const intT idx2, const intT N, INFO *info, const int thread_m, doubly_linked_list &AR)
 {
 	
-	int size1 = info[idx1].length;
-	int size2 = info[idx2].length;
+	intT size1 = info[idx1].length;
+	intT size2 = info[idx2].length;
 	t_float s =(t_float) size1/(size1+size2);
 	t_float t =(t_float) size2/(size1+size2);
 	
 	#pragma omp parallel num_threads(thread_m)
 	{
-		int i;
+		intT i;
 		#pragma omp for schedule(guided)
 		for(i=AR.start; i<N; i++)
 		{
@@ -295,9 +297,9 @@ void matrix_update(t_float *D, const int idx1, const int idx2, const int N, INFO
 	}
 }
 
-void find_NN(doubly_linked_list &AR, const int idx2, int &idx1, t_float &min, t_float *D, const int N, INFO *info)
+void find_NN(doubly_linked_list &AR, const intT idx2, intT &idx1, t_float &min, t_float *D, const intT N, INFO *info)
 {
-	int i;
+	intT i;
 	for (i=AR.start; i<idx2; i=AR.succ[i]) 
 	{
  		if ( (info[i].chainID==info[idx2].chainID)) continue;
@@ -319,7 +321,7 @@ void find_NN(doubly_linked_list &AR, const int idx2, int &idx1, t_float &min, t_
 	}
 }
 
-void Info_update(INFO *info, int &idx1, int &idx2, int &ClusterID)
+void Info_update(INFO *info, intT &idx1, intT &idx2, intT &ClusterID)
 {
 	info[idx2].length+=info[idx1].length;
 	info[idx2].clusterID=ClusterID++;
@@ -328,10 +330,10 @@ void Info_update(INFO *info, int &idx1, int &idx2, int &ClusterID)
 	info[idx2].chainID=VALID;
 }
 
-void cluster_info_set(INFO *info, const int N)
+void cluster_info_set(INFO *info, const intT N)
 {
 	#pragma omp parallel for schedule(guided)
-	for(int i=0;i<N;i++) 
+	for(intT i=0;i<N;i++) 
 	{
 		info[i].length=1;
 		info[i].clusterID=i;//i+1

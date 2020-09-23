@@ -5,6 +5,8 @@
 #include <queue>
 #include <stack>
 
+#include "common.h"
+
 #define VALID -1
 #define INVALID -2
 #define D_(r_,c_) ( D[(static_cast<size_t>(2*N-3-(r_))*(r_)>>1)-1+(c_)] )
@@ -17,21 +19,21 @@ class CHAIN;
 typedef struct update_pair U_PAIR;
 // class auto_array_ptr;
 
-bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &AR2,  t_float *D, const int N, INFO *info, 
-		std::list<CHAIN*> &chain_queue, int &ClusterID, int *map, int &chainID);
+bool Chain_Init(CHAIN* &NN_chain, doubly_linked_list &AR2,  t_float *D, const intT N, INFO *info, 
+		std::list<CHAIN*> &chain_queue, intT &ClusterID, intT *map, intT &chainID);
 		
 void Chain_Grow(CHAIN* &NN_chain, doubly_linked_list &AR, doubly_linked_list &AR2, t_float *D, 
-		const int N, INFO *info, int &ClusterID, std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue);
+		const intT N, INFO *info, intT &ClusterID, std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue);
 
 
-void matrix_update(t_float *D, const int idx1, const int idx2, const int N, INFO *info, const int thread_m, doubly_linked_list &AR);
-void Info_update(INFO *info, int &idx1, int &idx2, int &ClusterID);
-void find_NN(doubly_linked_list &AR, const int idx2, int &idx1, t_float &min, t_float *D, const int N, INFO *info);
+void matrix_update(t_float *D, const intT idx1, const intT idx2, const intT N, INFO *info, const int thread_m, doubly_linked_list &AR);
+void Info_update(INFO *info, intT &idx1, intT &idx2, intT &ClusterID);
+void find_NN(doubly_linked_list &AR, const intT idx2, intT &idx1, t_float &min, t_float *D, const intT N, INFO *info);
 
-void matrix_update_section(int &ClusterID, const int N,  std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue, t_float *D, 
-			   INFO *info, const int thread_m, doubly_linked_list &AR, std::list<CHAIN*> &chain_queue, int *map);
+void matrix_update_section(intT &ClusterID, const intT N,  std::queue<U_PAIR> &Q,  std::queue<CHAIN*> &update_queue, t_float *D, 
+			   INFO *info, const int thread_m, doubly_linked_list &AR, std::list<CHAIN*> &chain_queue, intT *map);
 
-void NN_chain(t_float *result, const int N, int thread_c, int thread_m);
+void NN_chain(t_float *result, const intT N, int thread_c, int thread_m);
 
 inline static void f_average( t_float * const b, const t_float a, const t_float s, const t_float t)
 {
@@ -70,18 +72,18 @@ public:
 class CHAIN
 {
 public:
-	CHAIN(int _ID)
+	CHAIN(intT _ID)
 	{
 		chainID=_ID;
 		dependentONcluster=-2;
 	}
 
-	void PUSH(int idx, t_float min)	{	List.push(idx);		dist.push(min);	}
+	void PUSH(intT idx, t_float min)	{	List.push(idx);		dist.push(min);	}
 	void POP()	{		List.pop();		dist.pop();	}
 	bool SIZE_1()	{	return List.size()==1;	}
 	bool EMPTY()	{	return List.empty();	}
 	t_float D_TOP()	{	return dist.top();		}
-	void RNN(int &idx1, int &idx2, t_float &min)
+	void RNN(intT &idx1, intT &idx2, t_float &min)
 	{
 			idx1=List.top();List.pop();
 			idx2=List.top();List.pop();
@@ -89,7 +91,7 @@ public:
 						
 			if (idx1>idx2) 
 			{
-				int tmp = idx1;
+				intT tmp = idx1;
 				idx1 = idx2;
 				idx2 = tmp;
 			}
@@ -98,36 +100,36 @@ public:
 	std::stack<int> List;
 	std::stack<t_float> dist;
 
-	int chainID;
-	int dependentONcluster;
+	intT chainID;
+	intT dependentONcluster;
 };
 
 class doubly_linked_list 
 {
 public:
-	int start;
+	intT start;
 	auto_array_ptr<int> succ;
 
 private:
 	auto_array_ptr<int> pred;
 
 public:
-	doubly_linked_list(const int size) 
+	doubly_linked_list(const intT size) 
 	{
 		// Initialize to the given size.
 		pred.init(size+1);
 		succ.init(size+1);
-		for (int i=1; i<size+1; i++)
+		for (intT i=1; i<size+1; i++)
 			pred[i] = i-1;
 		// pred[0] is never accessed!
-		for (int i=0; i<size; i++)
+		for (intT i=0; i<size; i++)
 			succ[i] = i+1;
 		//succ[size] is never accessed!
 		start = 0;
 		SIZE=size;
 	}
 
-	void remove(int idx) 
+	void remove(intT idx) 
 	{
 		// Remove an index from the list.
 		if (idx==start) start = succ[idx];
@@ -138,22 +140,22 @@ public:
 		}
 		SIZE--;
 	}
-	int SIZE;
+	intT SIZE;
 };
 
 typedef struct OBJECT_INFO
 {
-	int clusterID;
-	int length;
-	int chainID;
+	intT clusterID;
+	intT length;
+	intT chainID;
 	CHAIN *node;
 	std::list<CHAIN*> dependency_queue;
 }INFO;
 
 typedef struct update_pair //pairs to be merged
 {	
-	int idx1;
-	int idx2;
+	intT idx1;
+	intT idx2;
 }U_PAIR;
 
 #endif

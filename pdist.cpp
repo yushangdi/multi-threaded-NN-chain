@@ -43,7 +43,7 @@ void pdist(float *point, float *result, const intT MAX_N, const int DIM)
 	omp_set_max_active_levels(2);
 	#pragma omp parallel num_threads(2)
 	{
-		int tid=omp_get_thread_num();
+		// int tid=omp_get_thread_num();
 		#pragma omp sections
 		{
 

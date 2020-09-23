@@ -35,8 +35,11 @@ int main(int argc, char *argv[])
 	srand(time(0));
 	for(i=0;i<MAX_N*DIM;i++)
 	{
-		fscanf(pFile, "%f", &f);
+		if(1  == fscanf(pFile, "%f", &f)){
 		point[i] = f;
+		}else{
+		printf("Failed to read point.\n");
+		}
 	}
 	cout << "init " << t.next() << endl;
 
